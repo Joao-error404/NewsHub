@@ -9,7 +9,7 @@ import Foundation
 
 class NewsService {
     
-    let baseURL = "https://newsapi.org/v2/top-headlines"
+    let baseURL = "https://newsapi.org/v2/everything"
     
     func doRequest(url: URL) -> URLRequest {
         var request = URLRequest(url: url)
@@ -23,7 +23,11 @@ class NewsService {
     func getNews() async throws -> NewsResponse {
         var components = URLComponents(string: baseURL)!
         components.queryItems = [
-            URLQueryItem(name: "country", value: "us")
+            URLQueryItem(name: "language", value: "pt"),
+            URLQueryItem(name: "sortBy", value: "publishedAt"),
+            URLQueryItem(name: "pageSize", value: "10"),
+            URLQueryItem(name: "page", value: "1"),
+            URLQueryItem(name: "q", value: "a")
         ]
         
         guard let url = components.url else { throw URLError(.badURL) }
