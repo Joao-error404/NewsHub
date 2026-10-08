@@ -56,32 +56,6 @@ class HomeView: UIView {
         return stackView
     }()
     
-    private lazy var filterButtons: [UIButton] = [
-        makeFilterButton(title: "Para você", isSelected: true),
-        makeFilterButton(title: "Agora"),
-        makeFilterButton(title: "Brasil"),
-        makeFilterButton(title: "Mundo"),
-        makeFilterButton(title: "Tecnologia")
-    ]
-
-    private lazy var filterStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: filterButtons)
-        stackView.axis = .horizontal
-        stackView.spacing = 8
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-
-    private lazy var filterScrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-    
-    
     private lazy var lastNewsLabel: UILabel = {
         let label = UILabel()
         label.text = "Últimas Notícias"
@@ -180,34 +154,6 @@ class HomeView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-
-    private func makeFilterButton(title: String, isSelected: Bool = false) -> UIButton {
-        let button = UIButton(type: .system)
-        var configuration = UIButton.Configuration.filled()
-        configuration.title = title
-        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-            var outgoing = incoming
-            outgoing.font = UIFont.boldSystemFont(ofSize: 12)
-            return outgoing
-        }
-        configuration.baseForegroundColor = isSelected ? .white : .darkGray
-        configuration.baseBackgroundColor = isSelected ? .black : UIColor.systemGray6
-        configuration.contentInsets = NSDirectionalEdgeInsets(
-            top: 0,
-            leading: 16,
-            bottom: 0,
-            trailing: 16
-        )
-        configuration.cornerStyle = .capsule
-        button.configuration = configuration
-        button.titleLabel?.numberOfLines = 1
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.titleLabel?.textAlignment = .center
-        button.titleLabel?.lineBreakMode = .byTruncatingTail
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 34).isActive = true
-        return button
-    }
     
     func display(news: [News]) {
         featuredSection.arrangedSubviews
@@ -423,8 +369,6 @@ class HomeView: UIView {
     private func setHierarchy() {
         addSubview(titleStackView)
         addSubview(searchBar)
-        addSubview(filterScrollView)
-        filterScrollView.addSubview(filterStackView)
         addSubview(newsScrollView)
         newsScrollView.addSubview(contentStackView)
     }
@@ -457,30 +401,8 @@ class HomeView: UIView {
                 equalTo: safeAreaLayoutGuide.trailingAnchor,
                 constant: -8),
             
-            filterScrollView.topAnchor.constraint(
-                equalTo: searchBar.bottomAnchor,
-                constant: 24),
-            filterScrollView.leadingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.leadingAnchor,
-                constant: 16),
-            filterScrollView.trailingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.trailingAnchor,
-                constant: -16),
-            filterScrollView.heightAnchor.constraint(equalToConstant: 40),
-
-            filterStackView.leadingAnchor.constraint(
-                equalTo: filterScrollView.contentLayoutGuide.leadingAnchor),
-            filterStackView.trailingAnchor.constraint(
-                equalTo: filterScrollView.contentLayoutGuide.trailingAnchor),
-            filterStackView.topAnchor.constraint(
-                equalTo: filterScrollView.contentLayoutGuide.topAnchor),
-            filterStackView.bottomAnchor.constraint(
-                equalTo: filterScrollView.contentLayoutGuide.bottomAnchor),
-            filterStackView.heightAnchor.constraint(
-                equalTo: filterScrollView.frameLayoutGuide.heightAnchor),
-            
             newsScrollView.topAnchor.constraint(
-                equalTo: filterScrollView.bottomAnchor,
+                equalTo: searchBar.bottomAnchor,
                 constant: 20),
             newsScrollView.leadingAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.leadingAnchor,
