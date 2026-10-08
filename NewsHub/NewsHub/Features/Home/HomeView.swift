@@ -176,7 +176,7 @@ class HomeView: UIView {
 
         news.dropFirst().forEach { article in
             newsStackView.addArrangedSubview(
-                makeNewsContainer(news: article)
+                NewsCard(news: article)
             )
         }
     }
@@ -241,63 +241,6 @@ class HomeView: UIView {
             titleLabel.leadingAnchor.constraint(equalTo: metadataLabel.leadingAnchor),
             titleLabel.trailingAnchor.constraint(equalTo: metadataLabel.trailingAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: metadataLabel.topAnchor, constant: -12),
-        ])
-
-        loadImage(from: news.urlToImage, into: imageView)
-        return container
-    }
-
-    private func makeNewsContainer(news: News) -> UIView {
-        let container = UIView()
-        container.backgroundColor = .white
-        container.layer.cornerRadius = 18
-        container.layer.borderWidth = 1
-        container.layer.borderColor = UIColor.systemGray5.cgColor
-        container.translatesAutoresizingMaskIntoConstraints = false
-
-        let imageView = UIImageView()
-        imageView.backgroundColor = .systemGray6
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 14
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "photo")
-        imageView.tintColor = .systemGray3
-
-        let titleLabel = UILabel()
-        titleLabel.text = news.title ?? "Título indisponível"
-        titleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
-        titleLabel.textColor = UIColor(named: "ContrastColor")
-        titleLabel.numberOfLines = 3
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        let dateLabel = UILabel()
-        dateLabel.text = formattedPublicationDate(news.publishedAt)
-        dateLabel.font = .systemFont(ofSize: 11, weight: .regular)
-        dateLabel.textColor = UIColor(named: "GraySecondaryColor")
-        dateLabel.numberOfLines = 1
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        let textStackView = UIStackView(arrangedSubviews: [titleLabel, dateLabel])
-        textStackView.axis = .vertical
-        textStackView.alignment = .leading
-        textStackView.spacing = 8
-        textStackView.translatesAutoresizingMaskIntoConstraints = false
-
-        container.addSubview(imageView)
-        container.addSubview(textStackView)
-
-        NSLayoutConstraint.activate([
-                container.heightAnchor.constraint(equalToConstant: 140),
-
-                imageView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 12),
-                imageView.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-                imageView.widthAnchor.constraint(equalToConstant: 112),
-                imageView.heightAnchor.constraint(equalToConstant: 112),
-
-                textStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 12),
-                textStackView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -12),
-                textStackView.centerYAnchor.constraint(equalTo: container.centerYAnchor),
         ])
 
         loadImage(from: news.urlToImage, into: imageView)
