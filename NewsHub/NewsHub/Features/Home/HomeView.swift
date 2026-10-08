@@ -328,7 +328,7 @@ class HomeView: UIView {
         let dateLabel = UILabel()
         dateLabel.text = formattedPublicationDate(news.publishedAt)
         dateLabel.font = .systemFont(ofSize: 11, weight: .regular)
-        dateLabel.textColor = UIColor(named: "SecondaryColor")
+        dateLabel.textColor = UIColor(named: "GraySecondaryColor")
         dateLabel.numberOfLines = 1
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -489,7 +489,7 @@ class HomeView: UIView {
                 equalTo: safeAreaLayoutGuide.trailingAnchor,
                 constant: -16),
             newsScrollView.bottomAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.bottomAnchor),
+                equalTo: bottomAnchor),
 
             contentStackView.leadingAnchor.constraint(
                 equalTo: newsScrollView.contentLayoutGuide.leadingAnchor),

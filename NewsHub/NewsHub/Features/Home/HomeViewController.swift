@@ -9,10 +9,9 @@ import UIKit
 
 class HomeViewController: UIViewController {
     let contentView = HomeView()
-    let viewModel: HomeViewModel
+    let viewModel = HomeViewModel()
     
-    init(viewModel: HomeViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -27,14 +26,9 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
-        
         Task {
             let news = await viewModel.loadNews()
             contentView.display(news: news)
         }
-    }
-    
-    private func setupView() {
     }
 }
