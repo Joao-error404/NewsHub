@@ -10,11 +10,13 @@ import UIKit
 class HomeViewModel {
     private let service = NewsService()
     
-    func loadNews() async {
+    func loadNews() async -> [News] {
         do {
             let response = try await service.getNews()
+            return response.articles
         } catch {
             print(error.localizedDescription)
+            return []
         }
     }
 }

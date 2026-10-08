@@ -29,9 +29,10 @@ class HomeViewController: UIViewController {
         
         setupView()
         
-//        Task {
-//            await viewModel.loadNews()
-//        }
+        Task {
+            let news = await viewModel.loadNews()
+            contentView.display(news: news)
+        }
     }
     
     private func setupView() {

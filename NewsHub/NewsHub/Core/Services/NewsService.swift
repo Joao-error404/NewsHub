@@ -27,11 +27,10 @@ class NewsService {
             URLQueryItem(name: "sortBy", value: "publishedAt"),
             URLQueryItem(name: "pageSize", value: "10"),
             URLQueryItem(name: "page", value: "1"),
-            URLQueryItem(name: "q", value: "a")
+            URLQueryItem(name: "q", value: "noticia")
         ]
         
         guard let url = components.url else { throw URLError(.badURL) }
-        
         let request = doRequest(url: url)
         let (data, _) = try await URLSession.shared.data(for: request)
         
