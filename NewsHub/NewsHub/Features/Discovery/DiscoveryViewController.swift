@@ -11,6 +11,8 @@ class DiscoveryViewController: UIViewController{
     let contentView = DiscoveryView()
     let viewModel = DiscoveryViewModel()
     
+    var searchTask: Task<Void, Never>?
+    
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -27,12 +29,19 @@ class DiscoveryViewController: UIViewController{
         super.viewDidLoad()
         
         loadDiscoveryContent()
+        contentView.setupSearchBar(delegate: self)
     }
     
     private func loadDiscoveryContent() {
-        Task {
-            let reponse = await viewModel.loadDiscoveryContent()
-            contentView.display(news: reponse)
+        searchTask?.cancel() // cancela uma tarefa de pesquisa, se tiver
+        
+        searchTask = Task { [weak self] in
+            guard !Task.isCancelled, let self else { return } // checa se a tarefa atual (buscar as noticias) nao foi cancelada
+            
+            let reponse = await self.viewModel.loadDiscoveryContent() // carrega as notícias
+            
+            guard !Task.isCancelled else { return } // checa se a tarefa atual (buscar as noticias) nao foi cancelada
+            self.contentView.display(news: reponse) // mostra as noticias carregadas na tela
         }
     }
 }

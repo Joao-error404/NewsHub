@@ -20,6 +20,7 @@ class DiscoveryView: UIView{
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.keyboardDismissMode = .onDrag
         return scrollView
     }()
     
@@ -127,6 +128,10 @@ class DiscoveryView: UIView{
                 NewsCard(news: article)
             )
         }
+    }
+    
+    func setupSearchBar(delegate: UISearchBarDelegate) {
+        searchBar.delegate = delegate
     }
     
     override init(frame: CGRect) {

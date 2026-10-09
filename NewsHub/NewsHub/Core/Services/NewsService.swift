@@ -53,4 +53,21 @@ class NewsService {
         
         return try JSONDecoder().decode(NewsResponse.self, from: data)
     }
+    
+    func searchNews(query: String) async throws -> NewsResponse {
+        var components = URLComponents(string: baseURL)!
+        components.queryItems = [
+            URLQueryItem(name: "language", value: "pt"),
+            URLQueryItem(name: "sortBy", value: "relevancy"),
+            URLQueryItem(name: "pageSize", value: "20"),
+            URLQueryItem(name: "page", value: "1"),
+            URLQueryItem(name: "q", value: query)
+        ]
+        
+        guard let url = components.url else { throw URLError(.badURL) }
+        let request = doRequest(url: url)
+        let (data, _) = try await URLSession.shared.data(for: request)
+        
+        return try JSONDecoder().decode(NewsResponse.self, from: data)
+    }
 }

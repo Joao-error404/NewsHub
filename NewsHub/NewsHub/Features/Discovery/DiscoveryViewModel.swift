@@ -19,4 +19,14 @@ class DiscoveryViewModel {
             return []
         }
     }
+    
+    func searchNews(query: String) async -> [News] {
+        do {
+            let response = try await service.searchNews(query: query)
+            return response.articles
+        } catch {
+            print(error.localizedDescription)
+            return []
+        }
+    }
 }
