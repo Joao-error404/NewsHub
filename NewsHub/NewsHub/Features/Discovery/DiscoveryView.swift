@@ -8,6 +8,9 @@
 import UIKit
 
 class DiscoveryView: UIView{
+    
+    var onFilterSelected: ((String) -> Void)?
+    
     private lazy var newsScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -60,11 +63,12 @@ class DiscoveryView: UIView{
     }()
     
     private lazy var filterButtons: [UIButton] = [
-        makeFilterButton(title: "Para você", isSelected: true),
-        makeFilterButton(title: "Agora"),
-        makeFilterButton(title: "Brasil"),
-        makeFilterButton(title: "Mundo"),
-        makeFilterButton(title: "Tecnologia")
+        makeFilterButton(title: "Para você", isSelected: true, key: "noticia"),
+        makeFilterButton(title: "Esportes"),
+        makeFilterButton(title: "Entretenimento"),
+        makeFilterButton(title: "Tecnologia"),
+        makeFilterButton(title: "Ciência"),
+        makeFilterButton(title: "Saúde")
     ]
     
     private lazy var filterStackView: UIStackView = {
@@ -84,8 +88,15 @@ class DiscoveryView: UIView{
         return scrollView
     }()
     
-    private func makeFilterButton(title: String, isSelected: Bool = false) -> UIButton {
+    private func makeFilterButton(
+        title: String,
+        isSelected: Bool = false,
+        key: String = "") -> UIButton {
+            
+        let filterKey = key.isEmpty ? title.lowercased() : key
+            
         let button = UIButton(type: .system)
+        button.isSelected = isSelected
         var configuration = UIButton.Configuration.filled()
         configuration.title = title
         configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
@@ -93,8 +104,6 @@ class DiscoveryView: UIView{
             outgoing.font = UIFont.boldSystemFont(ofSize: 12)
             return outgoing
         }
-        configuration.baseForegroundColor = isSelected ? .white : .darkGray
-        configuration.baseBackgroundColor = isSelected ? .black : UIColor.systemGray6
         configuration.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
             leading: 16,
@@ -102,6 +111,8 @@ class DiscoveryView: UIView{
             trailing: 16
         )
         configuration.cornerStyle = .capsule
+        configuration.baseForegroundColor = isSelected ? .white : UIColor(named: "GraySecondaryColor")
+            configuration.baseBackgroundColor = isSelected ? UIColor(named: "ContrastColor") : .systemGray6
         button.configuration = configuration
         button.titleLabel?.numberOfLines = 1
         button.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -109,7 +120,30 @@ class DiscoveryView: UIView{
         button.titleLabel?.lineBreakMode = .byTruncatingTail
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        
+        button.addAction(
+            UIAction { [weak self, weak button] _ in
+                guard let self, let button else { return }
+                
+                self.selectFilterButton(button)
+                self.onFilterSelected?(filterKey)
+            },
+            for: .touchUpInside
+        )
+        
         return button
+    }
+    
+    private func selectFilterButton(_ selectedButton: UIButton) {
+        for button in filterButtons {
+            let selected = button === selectedButton
+            button.isSelected = selected
+            
+            var configuration = button.configuration
+            configuration?.baseForegroundColor = selected ? .white : UIColor(named: "GraySecondaryColor")
+            configuration?.baseBackgroundColor = selected ? UIColor(named: "ContrastColor") : .systemGray6
+            button.configuration = configuration
+        }
     }
     
     func display(news: [News]) {

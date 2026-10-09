@@ -28,6 +28,29 @@ class DiscoveryViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        contentView.onFilterSelected = { [weak self] filter in
+            guard let self else { return }
+            
+            switch filter {
+            case "noticia":
+                self.loadDiscoveryContent()
+            case "esportes", "entretenimento", "tecnologia", "saúde", "ciência":
+                self.searchTask?.cancel()
+                
+                self.searchTask = Task { [weak self] in
+                    guard let self, !Task.isCancelled else { return }
+                    
+                    let news = await self.viewModel.searchNews(query: filter)
+                    
+                    guard !Task.isCancelled else { return }
+                    self.contentView.display(news: news)
+                }
+                
+            default:
+                break
+            }
+        }
+        
         loadDiscoveryContent()
         contentView.setupSearchBar(delegate: self)
     }
