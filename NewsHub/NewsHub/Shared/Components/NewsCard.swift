@@ -14,10 +14,20 @@ final class NewsCard: UIView {
     private var favoritesSubscription: AnyCancellable?
 
     let favoriteButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .custom)
         let configuration = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
-        button.setImage(UIImage(systemName: "bookmark", withConfiguration: configuration), for: .normal)
-        button.setImage(UIImage(systemName: "bookmark.fill", withConfiguration: configuration), for: .selected)
+        button.setImage(
+            UIImage(
+                systemName: "bookmark",
+                withConfiguration: configuration),
+                for: .normal
+        )
+        button.setImage(
+            UIImage(
+                systemName: "bookmark.fill",
+                withConfiguration: configuration),
+                for: .selected
+        )
         button.tintColor = UIColor(named: "AccentColor") ?? .systemRed
         button.accessibilityLabel = "Adicionar aos favoritos"
         button.translatesAutoresizingMaskIntoConstraints = false
