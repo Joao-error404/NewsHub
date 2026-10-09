@@ -8,16 +8,6 @@
 import UIKit
 
 class FavoritesView: UIView {
-    private lazy var title: UILabel = {
-        let label = UILabel()
-        label.text = "Favoritos"
-        label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.textAlignment = .left
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(named: "ContrastColor")
-        return label
-    }()
-    
     private lazy var newsScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -74,38 +64,31 @@ class FavoritesView: UIView {
     }
     
     private func setHierarchy() {
-        addSubview(title)
         addSubview(newsScrollView)
         newsScrollView.addSubview(contentStackView)
     }
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            title.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            
-            newsScrollView.topAnchor.constraint(
-                equalTo: title.bottomAnchor,
-                constant: 20),
-            newsScrollView.leadingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.leadingAnchor,
-                constant: 16),
-            newsScrollView.trailingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.trailingAnchor,
-                constant: -16),
-            newsScrollView.bottomAnchor.constraint(
-                equalTo: bottomAnchor),
+            newsScrollView.topAnchor.constraint(equalTo: topAnchor),
+            newsScrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            newsScrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            newsScrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
             contentStackView.leadingAnchor.constraint(
-                equalTo: newsScrollView.contentLayoutGuide.leadingAnchor),
+                equalTo: newsScrollView.contentLayoutGuide.leadingAnchor,
+                constant: 16
+            ),
             contentStackView.trailingAnchor.constraint(
-                equalTo: newsScrollView.contentLayoutGuide.trailingAnchor),
-            contentStackView.topAnchor.constraint(
-                equalTo: newsScrollView.contentLayoutGuide.topAnchor),
-            contentStackView.bottomAnchor.constraint(
-                equalTo: newsScrollView.contentLayoutGuide.bottomAnchor),
+                equalTo: newsScrollView.contentLayoutGuide.trailingAnchor,
+                constant: -16
+            ),
+            contentStackView.topAnchor.constraint(equalTo: newsScrollView.contentLayoutGuide.topAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: newsScrollView.contentLayoutGuide.bottomAnchor),
             contentStackView.widthAnchor.constraint(
-                equalTo: newsScrollView.frameLayoutGuide.widthAnchor),
+                equalTo: newsScrollView.frameLayoutGuide.widthAnchor,
+                constant: -32
+            ),
         ])
     }
 }

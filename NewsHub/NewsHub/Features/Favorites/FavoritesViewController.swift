@@ -30,6 +30,10 @@ class FavoritesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        navigationItem.title = "Favoritos"
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
         Task {
             await viewModel.loadFavorites()
             contentView.display(news: viewModel.favoriteNews)

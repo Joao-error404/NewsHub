@@ -11,7 +11,7 @@ class DiscoveryView: UIView{
     private lazy var title: UILabel = {
         let label = UILabel()
         label.text = "Explorar"
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
