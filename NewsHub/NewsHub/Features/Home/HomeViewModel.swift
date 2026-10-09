@@ -9,7 +9,6 @@ import UIKit
 
 class HomeViewModel {
     private let service = NewsService()
-    private let favoritesStore = FavoriteNewsStore()
     
     func loadNews() async -> [News] {
         do {

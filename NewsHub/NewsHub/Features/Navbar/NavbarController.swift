@@ -14,9 +14,11 @@ class NavbarController: UITabBarController {
         
         let homeViewController = HomeViewController()
         let discoveryViewController = DiscoveryViewController()
+        let favoritesViewController = FavoritesViewController()
         
         let homeNavigationController = UINavigationController(rootViewController: homeViewController)
         let discoveryNavigationController = UINavigationController(rootViewController: discoveryViewController)
+        let favoritesNavigationController = UINavigationController(rootViewController: favoritesViewController)
         
         homeNavigationController.tabBarItem = UITabBarItem(
             title: "Início",
@@ -30,9 +32,16 @@ class NavbarController: UITabBarController {
             selectedImage: UIImage(systemName: "safari.fill")
         )
         
+        favoritesNavigationController.tabBarItem = UITabBarItem(
+            title: "Favoritos",
+            image: UIImage(systemName: "heart"),
+            selectedImage: UIImage(systemName: "heart.fill")
+        )
+        
         viewControllers = [
             homeNavigationController,
-            discoveryNavigationController
+            discoveryNavigationController,
+            favoritesNavigationController
         ]
         
         selectedIndex = 0
