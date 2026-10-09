@@ -8,14 +8,6 @@
 import UIKit
 
 class DiscoveryView: UIView{
-    private lazy var title: UILabel = {
-        let label = UILabel()
-        label.text = "Explorar"
-        label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     private lazy var newsScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -34,11 +26,14 @@ class DiscoveryView: UIView{
     
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
+            searchBar,
+            filterScrollView,
             newsStackView
         ])
         stackView.axis = .vertical
-        stackView.spacing = 22
+        stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.setCustomSpacing(16, after: searchBar)
         return stackView
     }()
     
@@ -152,81 +147,64 @@ class DiscoveryView: UIView{
     }
     
     private func setHierarchy() {
-        addSubview(title)
-       
-        addSubview(searchBar)
-        
-        addSubview(filterScrollView)
-        filterScrollView.addSubview(filterStackView)
-        
         addSubview(newsScrollView)
         newsScrollView.addSubview(contentStackView)
+        filterScrollView.addSubview(filterStackView)
        
     }
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            title.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            title.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            title.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            
-            searchBar.topAnchor.constraint(
-                equalTo: title.bottomAnchor,
-                constant: 1
+            newsScrollView.topAnchor.constraint(
+                equalTo: topAnchor
             ),
-            searchBar.leadingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.leadingAnchor,
-                constant: 8
+            newsScrollView.leadingAnchor.constraint(
+                equalTo: leadingAnchor
             ),
-            searchBar.trailingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.trailingAnchor,
-                constant: -8
+            newsScrollView.trailingAnchor.constraint(
+                equalTo: trailingAnchor
             ),
-            
-            filterScrollView.topAnchor.constraint(
-                equalTo: searchBar.bottomAnchor,
-                constant: 16),
-            filterScrollView.leadingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.leadingAnchor,
-                constant: 16),
-            filterScrollView.trailingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.trailingAnchor,
-                constant: -16),
+            newsScrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+
+            contentStackView.leadingAnchor.constraint(
+                equalTo: newsScrollView.contentLayoutGuide.leadingAnchor,
+                constant: 16
+            ),
+            contentStackView.trailingAnchor.constraint(
+                equalTo: newsScrollView.contentLayoutGuide.trailingAnchor,
+                constant: -16
+            ),
+            contentStackView.topAnchor.constraint(
+                equalTo: newsScrollView.contentLayoutGuide.topAnchor
+            ),
+            contentStackView.bottomAnchor.constraint(
+                equalTo: newsScrollView.contentLayoutGuide.bottomAnchor,
+                constant: -32
+            ),
+            contentStackView.widthAnchor.constraint(
+                equalTo: newsScrollView.frameLayoutGuide.widthAnchor,
+                constant: -32
+            ),
+
             filterScrollView.heightAnchor.constraint(equalToConstant: 40),
 
             filterStackView.leadingAnchor.constraint(
-                equalTo: filterScrollView.contentLayoutGuide.leadingAnchor),
+                equalTo: filterScrollView.contentLayoutGuide.leadingAnchor,
+                constant: 8
+            ),
             filterStackView.trailingAnchor.constraint(
-                equalTo: filterScrollView.contentLayoutGuide.trailingAnchor),
+                equalTo: filterScrollView.contentLayoutGuide.trailingAnchor,
+                constant: -8
+            ),
             filterStackView.topAnchor.constraint(
-                equalTo: filterScrollView.contentLayoutGuide.topAnchor),
+                equalTo: filterScrollView.contentLayoutGuide.topAnchor
+            ),
             filterStackView.bottomAnchor.constraint(
-                equalTo: filterScrollView.contentLayoutGuide.bottomAnchor),
+                equalTo: filterScrollView.contentLayoutGuide.bottomAnchor
+            ),
             filterStackView.heightAnchor.constraint(
-                equalTo: filterScrollView.frameLayoutGuide.heightAnchor),
-            
-            newsScrollView.topAnchor.constraint(
-                equalTo: filterScrollView.bottomAnchor,
-                constant: 20),
-            newsScrollView.leadingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.leadingAnchor,
-                constant: 16),
-            newsScrollView.trailingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.trailingAnchor,
-                constant: -16),
-            newsScrollView.bottomAnchor.constraint(
-                equalTo: bottomAnchor),
-
-            contentStackView.leadingAnchor.constraint(
-                equalTo: newsScrollView.contentLayoutGuide.leadingAnchor),
-            contentStackView.trailingAnchor.constraint(
-                equalTo: newsScrollView.contentLayoutGuide.trailingAnchor),
-            contentStackView.topAnchor.constraint(
-                equalTo: newsScrollView.contentLayoutGuide.topAnchor),
-            contentStackView.bottomAnchor.constraint(
-                equalTo: newsScrollView.contentLayoutGuide.bottomAnchor),
-            contentStackView.widthAnchor.constraint(
-                equalTo: newsScrollView.frameLayoutGuide.widthAnchor),
+                equalTo: filterScrollView.frameLayoutGuide.heightAnchor
+            ),
         ])
     }
 }

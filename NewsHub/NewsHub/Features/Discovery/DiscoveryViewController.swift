@@ -32,6 +32,13 @@ class DiscoveryViewController: UIViewController{
         contentView.setupSearchBar(delegate: self)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationItem.title = "Explorar"
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
     private func loadDiscoveryContent() {
         searchTask?.cancel() // cancela uma tarefa de pesquisa, se tiver
         
