@@ -10,6 +10,8 @@ import UIKit
 class DiscoveryView: UIView{
     
     var onFilterSelected: ((String) -> Void)?
+    var onNewsSelected: ((News) -> Void)?
+
     
     private lazy var newsScrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -153,9 +155,13 @@ class DiscoveryView: UIView{
         }
 
         news.forEach { article in
-            newsStackView.addArrangedSubview(
-                NewsCard(news: article)
-            )
+            let card = NewsCard(news: article)
+            
+            card.onTap = { [weak self] selectedNews in
+                self?.onNewsSelected?(selectedNews)
+            }
+            
+            newsStackView.addArrangedSubview(card)
         }
     }
     

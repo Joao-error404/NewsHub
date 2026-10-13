@@ -12,6 +12,8 @@ final class NewsCard: UIView {
     private let news: News
     private let favoritesStore: FavoriteNewsStore
     private var favoritesSubscription: AnyCancellable?
+    
+    var onTap: ((News) -> Void)?
 
     let favoriteButton: UIButton = {
         let button = UIButton(type: .custom)
@@ -112,10 +114,22 @@ final class NewsCard: UIView {
         }
 
         loadImage(from: news.urlToImage, into: imageView)
+        
+        let tap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(handleTap)
+        )
+        
+        tap.delegate = self
+        addGestureRecognizer(tap)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func handleTap() {
+        onTap?(news)
     }
 
     @objc private func toggleFavorite() {

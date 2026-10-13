@@ -8,6 +8,9 @@
 import UIKit
 
 class HomeView: UIView {
+    
+    var onNewsSelected: ((News) -> Void)?
+    
     private lazy var lastNewsLabel: UILabel = {
         let label = UILabel()
         label.text = "Últimas Notícias"
@@ -136,9 +139,13 @@ class HomeView: UIView {
         }
 
         news.dropFirst().forEach { article in
-            newsStackView.addArrangedSubview(
-                NewsCard(news: article)
-            )
+            let card = NewsCard(news: article)
+            
+            card.onTap = { [weak self] selectedNews in
+                self?.onNewsSelected?(selectedNews)
+            }
+            
+            newsStackView.addArrangedSubview(card)
         }
     }
 

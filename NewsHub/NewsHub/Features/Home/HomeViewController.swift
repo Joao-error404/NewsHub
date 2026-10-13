@@ -26,6 +26,15 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        contentView.onNewsSelected = { [weak self] news in
+            let controller = NewsViewController(news: news)
+            
+            self?.navigationController?.pushViewController(
+                controller,
+                animated: true)
+        }
+        
+        
         Task {
             let news = await viewModel.loadNews()
             contentView.display(news: news)

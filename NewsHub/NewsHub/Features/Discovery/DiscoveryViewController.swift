@@ -28,6 +28,14 @@ class DiscoveryViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        contentView.onNewsSelected = { [weak self] news in
+            let controller = NewsViewController(news: news)
+            
+            self?.navigationController?.pushViewController(
+                controller,
+                animated: true)
+        }
+        
         contentView.onFilterSelected = { [weak self] filter in
             guard let self else { return }
             
