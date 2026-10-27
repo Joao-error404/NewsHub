@@ -9,9 +9,10 @@ import UIKit
 
 class FavoritesViewController: UIViewController {
     let contentView = FavoritesView()
-    let viewModel = FavoritesViewModel()
+    let viewModel: FavoritesViewModel
     
-    init() {
+    init(viewModel: FavoritesViewModel? = nil) {
+        self.viewModel = viewModel ?? FavoritesViewModel()
         super.init(nibName: nil, bundle: nil)
     }
     

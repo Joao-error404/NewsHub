@@ -7,16 +7,23 @@
 
 import UIKit
 
+@MainActor
 class FavoritesViewModel {
-    private let service = NewsService()
-    private let favoritesStore = FavoriteNewsStore.shared
-    
+    private let service: NewsServing
+    private let store: FavoriteNewsStoring
     private(set) var favoriteNews: [News] = []
+    
+    init(
+        service: NewsServing? = nil,    
+        favoritesStore: FavoriteNewsStoring? = nil) {
+            self.service = service ?? NewsService()
+            self.store = favoritesStore ?? FavoriteNewsStore.shared
+    }
     
     func loadFavorites() async {
         do {
-            try await favoritesStore.load()
-            favoriteNews = favoritesStore.favorites
+            try await store.load()
+            favoriteNews = store.favorites
         } catch {
             print(error.localizedDescription)
         }

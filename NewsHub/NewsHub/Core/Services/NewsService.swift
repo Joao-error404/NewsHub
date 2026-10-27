@@ -7,14 +7,30 @@
 
 import Foundation
 
-class NewsService {
+protocol HTTPClient {
+    func data(for request: URLRequest) async throws -> (Data, URLResponse)
+}
+
+extension URLSession: HTTPClient {}
+
+class NewsService: NewsServing {
     
     let baseURL = "https://newsapi.org/v2/everything"
+    private let client: HTTPClient
+    private let apiKey: String
+    
+    init(
+        client: HTTPClient = URLSession.shared,
+        apiKey: String = ProcessInfo.processInfo.environment["API_KEY"] ?? ""
+    ) {
+        self.client = client
+        self.apiKey = apiKey
+    }
     
     func doRequest(url: URL) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue(
-            "Bearer \(ProcessInfo.processInfo.environment["API_KEY"]!)",
+            "Bearer \(apiKey)",
             forHTTPHeaderField: "Authorization"
         )
         return request
@@ -32,7 +48,7 @@ class NewsService {
         
         guard let url = components.url else { throw URLError(.badURL) }
         let request = doRequest(url: url)
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, _) = try await client.data(for: request)
         
         return try JSONDecoder().decode(NewsResponse.self, from: data)
     }
@@ -49,7 +65,7 @@ class NewsService {
         
         guard let url = components.url else { throw URLError(.badURL) }
         let request = doRequest(url: url)
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, _) = try await client.data(for: request)
         
         return try JSONDecoder().decode(NewsResponse.self, from: data)
     }
@@ -66,7 +82,7 @@ class NewsService {
         
         guard let url = components.url else { throw URLError(.badURL) }
         let request = doRequest(url: url)
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, _) = try await client.data(for: request)
         
         return try JSONDecoder().decode(NewsResponse.self, from: data)
     }

@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 @MainActor
-class FavoriteNewsStore {
+class FavoriteNewsStore: FavoriteNewsStoring {
     // instancia padrao para o card ser salvo em todas as telas
     static let shared = FavoriteNewsStore()
 
@@ -65,5 +65,9 @@ class FavoriteNewsStore {
         }
         
         favorites = decodedNews
+    }
+    
+    var favoritesPublisher: AnyPublisher<[News], Never> {
+        $favorites.eraseToAnyPublisher()
     }
 }

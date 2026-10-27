@@ -9,9 +9,10 @@ import UIKit
 
 class HomeViewController: UIViewController {
     let contentView = HomeView()
-    let viewModel = HomeViewModel()
+    let viewModel: HomeViewModel
     
-    init() {
+    init(viewModel: HomeViewModel = HomeViewModel()) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     

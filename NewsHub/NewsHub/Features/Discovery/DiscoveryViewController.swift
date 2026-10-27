@@ -9,11 +9,12 @@ import UIKit
 
 class DiscoveryViewController: UIViewController{
     let contentView = DiscoveryView()
-    let viewModel = DiscoveryViewModel()
+    let viewModel: DiscoveryViewModel
     
     var searchTask: Task<Void, Never>?
     
-    init() {
+    init(viewModel: DiscoveryViewModel = DiscoveryViewModel()) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     

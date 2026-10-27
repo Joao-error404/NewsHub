@@ -8,7 +8,11 @@
 import UIKit
 
 class DiscoveryViewModel {
-    private let service = NewsService()
+    private let service: NewsServing
+    
+    init(service: NewsServing = NewsService()) {
+        self.service = service
+    }
     
     func loadDiscoveryContent() async -> [News] {
         do {

@@ -8,7 +8,11 @@
 import UIKit
 
 class HomeViewModel {
-    private let service = NewsService()
+    private let service: NewsServing
+    
+    init(service: NewsServing = NewsService()) {
+        self.service = service
+    }
     
     func loadNews() async -> [News] {
         do {

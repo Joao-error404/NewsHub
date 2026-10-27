@@ -12,10 +12,21 @@ import UIKit
 class NewsViewController: UIViewController {
     private let news: News
     let contentView = NewsView()
-    private let favoritesStore = FavoriteNewsStore.shared
+    private let favoritesStore: FavoriteNewsStoring
     private var favoritesSubscription: AnyCancellable?
     private var isUpdatingFavorite = false
-
+    
+    init(news: News, favoritesStore: FavoriteNewsStoring? = nil) {
+        self.news = news
+        self.favoritesStore = favoritesStore ?? FavoriteNewsStore.shared
+        super.init(nibName: nil, bundle: nil)
+        hidesBottomBarWhenPushed = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private lazy var shareBarButtonItem: UIBarButtonItem = {
         let item = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareNews))
         item.accessibilityLabel = "Compartilhar notícia"
@@ -33,16 +44,6 @@ class NewsViewController: UIViewController {
         return item
     }()
     
-    init(news: News) {
-        self.news = news
-        super.init(nibName: nil, bundle: nil)
-        hidesBottomBarWhenPushed = true
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func loadView() {
         view = contentView
         contentView.configure(with: news)
@@ -58,7 +59,7 @@ class NewsViewController: UIViewController {
             guard let self, let url = self.articleURL else { return }
             self.present(SFSafariViewController(url: url), animated: true)
         }
-        favoritesSubscription = favoritesStore.$favorites.sink { [weak self] _ in
+        favoritesSubscription = favoritesStore.favoritesPublisher.sink { [weak self] _ in
             self?.updateFavoriteState()
         }
     }

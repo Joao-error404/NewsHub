@@ -10,7 +10,7 @@ import UIKit
 
 final class NewsCard: UIView {
     private let news: News
-    private let favoritesStore: FavoriteNewsStore
+    private let favoritesStore: FavoriteNewsStoring
     private var favoritesSubscription: AnyCancellable?
     
     var onTap: ((News) -> Void)?
@@ -36,8 +36,8 @@ final class NewsCard: UIView {
         return button
     }()
 
-    init(news: News, favoritesStore: FavoriteNewsStore? = nil) {
-        let favoritesStore = favoritesStore ?? .shared
+    init(news: News, favoritesStore: FavoriteNewsStoring? = nil) {
+        let favoritesStore = favoritesStore ?? FavoriteNewsStore.shared
         
         self.news = news
         self.favoritesStore = favoritesStore
@@ -105,7 +105,7 @@ final class NewsCard: UIView {
 
         favoriteButton.isEnabled = favoritesStore.canFavorite(news)
         favoriteButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
-        favoritesSubscription = favoritesStore.$favorites.sink { [weak self] favorites in
+        favoritesSubscription = favoritesStore.favoritesPublisher.sink { [weak self] favorites in
             guard let self else { return }
             self.updateFavoriteButton(
                 isFavorite: self.favoritesStore.canFavorite(news)
